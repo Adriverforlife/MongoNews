@@ -1,5 +1,5 @@
 var express = require("express");
-var router = express.Router();
+//var router = express.Router();
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
@@ -40,9 +40,9 @@ mongoose.connect("mongodb://localhost/newsScrapper", { useNewUrlParser: true });
 app.get("/", function(req, res) {
  
    // console.log(hbsObject);
-    res.render("index", );
+    res.render("index");
   });
-
+//router.get("/saved")
 
 
 // A GET route for scraping the echoJS website
@@ -84,7 +84,7 @@ app.get("/scrape", function (req, res) {
 // Route for getting all Articles from the db
 app.get("/articles", function (req, res) {
   // TODO: Finish the route so it grabs all of the articles
-  db.Article.find({})
+  db.Article.find({}).sort({_id: -1})
   .then(function(dbArticle) {
     // If all Users are successfully found, send them back to the client
     res.json(dbArticle);
@@ -102,6 +102,10 @@ app.get("/articles/:id", function (req, res) {
   // Finish the route so it finds one article using the req.params.id,
   // and run the populate method with "note",
   // then responds with the article with the note included
+  // db.Note.findOne({ _id: req.params.id }).populate("note").then(function(comments){
+  //   console.log(comments)
+  //   res.json(comments)
+  // })
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function (dbArticle) {
@@ -124,15 +128,29 @@ app.post("/articles/:id", function (req, res) {
   db.Note.create(req.body)
     .then(function (dbNote) {
 
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { notes: dbNote._id }, { new: true });
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
-    .then(function (dbUser) {
-      res.json(dbUser);
+    .then(function (dbArticle) {
+      res.json(dbArticle);
     })
     .catch(function (err) {
       res.json(err);
     });
 });
+
+//get notes
+// app.get("/articles", function (req, res) {
+//   // TODO: Finish the route so it grabs all of the articles
+//   db.Article.find({}).sort({_id: -1})
+//   .then(function(dbArticle) {
+//     // If all Users are successfully found, send them back to the client
+//     res.json(dbArticle);
+//   })
+//     .catch(function (err) {
+//       // If an error occurs, send the error back to the client
+//       res.json(err);
+//     });
+// });
 
 // Start the server
 app.listen(PORT, function () {

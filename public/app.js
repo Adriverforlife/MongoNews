@@ -40,13 +40,14 @@ $(document).on("click", ".title", function() {
         $("#bodyinput").val(data.note.body);
       }
     });
+    
 });
 
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
-
+console.log(thisId)
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
     method: "POST",
@@ -55,7 +56,8 @@ $(document).on("click", "#savenote", function() {
       // Value taken from title input
       title: $("#titleinput").val(),
       // Value taken from note textarea
-      body: $("#bodyinput").val()
+      body: $("#bodyinput").val(),
+      artID:  "test"
     }
   })
     // With that done
