@@ -34,11 +34,13 @@ $(document).on("click", ".title", function() {
 
       // If there's a note in the article
       if (data.note) {
+        for(var i=0;i<data.note.length;i++)
+        $("#previous").append("<h2>"+data.note[i].title+"</h2><p>"+data.note[i].body+"</p>")
         // Place the title of the note in the title input
-        $("#titleinput").val(data.note.title);
+       // $("#titleinput").val(data.note.title);
         
         // Place the body of the note in the body textarea
-        $("#bodyinput").val(data.note.body);
+        //$("#bodyinput").val(data.note.body);
         
       }
     });
