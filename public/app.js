@@ -36,8 +36,10 @@ $(document).on("click", ".title", function() {
       if (data.note) {
         // Place the title of the note in the title input
         $("#titleinput").val(data.note.title);
+        
         // Place the body of the note in the body textarea
         $("#bodyinput").val(data.note.body);
+        
       }
     });
     
